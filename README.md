@@ -1,193 +1,189 @@
-# Online Quiz Maker 🎯
+# QuizMaster 🎯
 
 **CodSoft Internship — Level 2 · Task 2**
 
-A full-stack MERN application where users can create, share, and take quizzes with instant scoring and feedback.
+A full-stack MERN-based online quiz platform designed for a teacher-student classroom workflow. Teachers can create and manage quizzes, create student accounts, assign quizzes, monitor performance, and view detailed results. Students can securely access their assigned quizzes, complete timed assessments, and review their results.
+
+## 🌐 Live Demo
+
+**QuizMaster:**  
+https://usharanih0515-lang.github.io/codsoft_task2_quizmaster/
+
+> Backend API is deployed separately and configured through the frontend environment variable.
 
 ---
 
-## Features
+## ✨ Features
 
-- 🔐 **JWT Authentication** — Register, Login, Logout with bcrypt password hashing
-- ✏️ **Quiz Creation** — Dynamic question builder with exactly 4 options per question
-- 🔍 **Quiz Discovery** — Search, filter by category and difficulty
-- 🎯 **Quiz Taking** — One question at a time with progress tracking
-- 📊 **Instant Results** — Backend-calculated score with answer review
-- 🖥️ **Dashboard** — Manage your own quizzes (create, view, delete)
-- 📱 **Responsive Design** — Works on mobile (320px+), tablet and desktop
+### 🔐 Authentication & Role-Based Access
+
+- JWT authentication
+- Secure bcrypt password hashing
+- Teacher registration and login
+- Teacher-created student accounts
+- Role-based teacher/student access
+- Protected frontend routes
+- Server-side authorization
+- Student accounts can be associated with their teacher
+- First-login password change support
+
+### 👨‍🏫 Teacher Features
+
+- Teacher dashboard
+- Create quizzes
+- Edit quizzes
+- Delete owned quizzes
+- Add multiple-choice questions
+- Assign quizzes to selected students
+- Create and manage students
+- Set quiz difficulty
+- Set quiz time limit
+- Configure quiz availability window
+- Teacher test mode
+- View student attempts
+- View detailed quiz results
+- View quiz performance analytics
+- View total students
+- View total quizzes
+- View total attempts
+- View average score
+
+### 👨‍🎓 Student Features
+
+- Secure student login
+- View assigned quizzes
+- Start quiz with confirmation
+- Server-controlled countdown timer
+- One-question-at-a-time quiz interface
+- Question navigator
+- Answered-question tracking
+- Auto-save answers
+- Refresh-safe quiz attempts
+- Automatic submission when time expires
+- Manual submission confirmation
+- Instant results
+- Correct/incorrect/unanswered review
+- Personal results history
+
+### ⏱️ Secure Quiz Timing
+
+Quiz timing is enforced by the backend.
+
+- Timer starts only after the student starts the quiz
+- `expiresAt` is calculated by the server
+- Browser refresh does not reset the timer
+- Countdown is synchronized with the server deadline
+- Automatic submission occurs when the timer reaches zero
+- Backend validates the submission deadline
+- Students cannot extend the quiz by changing browser-side timer values
+
+### 📊 Analytics
+
+Teachers can monitor:
+
+- Total students
+- Total quizzes
+- Total attempts
+- Average score
+- Students assigned per quiz
+- Students who attempted a quiz
+- Completion rate
+- Average quiz score
+- Student name
+- Student email
+- Quiz title
+- Score
+- Percentage
+- Time taken
+- Submission status
+- Submission date
+
+### 📅 Quiz Availability
+
+Teachers can optionally configure:
+
+- Available From
+- Available Until
+
+The backend validates the availability window so students cannot bypass it through the frontend.
 
 ---
 
-## Tech Stack
+## 🛡️ Security
 
-| Layer    | Technology                        |
-|----------|-----------------------------------|
-| Frontend | React 18, Vite, React Router v6   |
-| Backend  | Node.js, Express 5                |
-| Database | MongoDB, Mongoose                 |
-| Auth     | JWT, bcrypt                       |
-| HTTP     | Axios                             |
-| Icons    | Lucide React                      |
+- JWT-based authentication
+- Passwords hashed using bcrypt
+- Server-side role authorization
+- Teacher ownership validation
+- Student assignment validation
+- Server-side score calculation
+- Correct answers are not exposed during quiz taking
+- Server-enforced quiz deadlines
+- Server-enforced quiz availability
+- Students can access only their assigned quizzes
+- Students can view only their own results
+- Teachers can access only their own quizzes, students, and results
+- `.env` files are excluded from Git
 
 ---
 
-## Project Structure
+## 🛠️ Tech Stack
 
-```
-Task2_OnlineQuizMaker/
+| Layer | Technology |
+|---|---|
+| Frontend | React 18 |
+| Build Tool | Vite |
+| Routing | React Router |
+| Backend | Node.js |
+| API | Express |
+| Database | MongoDB |
+| ODM | Mongoose |
+| Authentication | JWT |
+| Password Security | bcrypt |
+| HTTP Client | Axios |
+| Icons | Lucide React |
+| Deployment | GitHub Pages + Backend Hosting |
+
+---
+
+## 📁 Project Structure
+
+```text
+QuizMaster/
 ├── backend/
 │   ├── controllers/
 │   │   ├── authController.js
-│   │   └── quizController.js
+│   │   ├── quizController.js
+│   │   └── userController.js
 │   ├── middleware/
-│   │   └── authMiddleware.js
+│   │   ├── authMiddleware.js
+│   │   └── roleMiddleware.js
 │   ├── models/
 │   │   ├── User.js
-│   │   └── Quiz.js
+│   │   ├── Quiz.js
+│   │   └── QuizAttempt.js
 │   ├── routes/
 │   │   ├── authRoutes.js
 │   │   ├── quizRoutes.js
 │   │   └── userRoutes.js
+│   ├── scripts/
 │   ├── .env.example
 │   ├── package.json
 │   └── server.js
-└── frontend/
-    ├── src/
-    │   ├── components/
-    │   │   ├── Footer.jsx
-    │   │   ├── Navbar.jsx
-    │   │   └── ProtectedRoute.jsx
-    │   ├── contexts/
-    │   │   └── AuthContext.jsx
-    │   ├── pages/
-    │   │   ├── CreateQuiz.jsx
-    │   │   ├── Dashboard.jsx
-    │   │   ├── Home.jsx
-    │   │   ├── Login.jsx
-    │   │   ├── QuizDetails.jsx
-    │   │   ├── QuizList.jsx
-    │   │   ├── QuizResults.jsx
-    │   │   ├── Register.jsx
-    │   │   └── TakeQuiz.jsx
-    │   ├── services/
-    │   │   └── api.js
-    │   ├── App.jsx
-    │   └── main.jsx
-    ├── .env.example
-    ├── package.json
-    └── vite.config.js
-```
-
----
-
-## Environment Variables
-
-### Backend (`backend/.env`)
-```
-MONGODB_URI=mongodb://localhost:27017/online-quiz-maker
-JWT_SECRET=your_strong_random_secret_here
-PORT=5000
-FRONTEND_URL=http://localhost:5173
-```
-
-### Frontend (`frontend/.env`)
-```
-VITE_API_URL=http://localhost:5000/api
-```
-
-> ⚠️ Never commit `.env` files. Use `.env.example` as a template.
-
----
-
-## Setup & Run
-
-### Prerequisites
-- Node.js v18+
-- MongoDB (local or Atlas)
-
-### 1. Clone / Navigate to the project
-```bash
-cd Task2_OnlineQuizMaker
-```
-
-### 2. Backend Setup
-```bash
-cd backend
-cp .env.example .env
-# Edit .env and fill in MONGODB_URI and JWT_SECRET
-npm install
-npm run dev
-```
-Backend runs at: `http://localhost:5000`
-
-### 3. Frontend Setup
-```bash
-cd frontend
-cp .env.example .env
-# Edit .env — set VITE_API_URL=http://localhost:5000/api
-npm install
-npm run dev
-```
-Frontend runs at: `http://localhost:5173`
-
----
-
-## API Endpoints
-
-### Authentication
-| Method | Endpoint            | Access  | Description       |
-|--------|---------------------|---------|-------------------|
-| POST   | /api/auth/register  | Public  | Register user     |
-| POST   | /api/auth/login     | Public  | Login user        |
-| GET    | /api/auth/me        | Private | Get current user  |
-
-### Quizzes
-| Method | Endpoint                  | Access  | Description             |
-|--------|---------------------------|---------|-------------------------|
-| GET    | /api/quizzes              | Public  | List/search quizzes     |
-| GET    | /api/quizzes/:id          | Public  | Get quiz details        |
-| POST   | /api/quizzes              | Private | Create quiz             |
-| PUT    | /api/quizzes/:id          | Private | Update quiz (owner)     |
-| DELETE | /api/quizzes/:id          | Private | Delete quiz (owner)     |
-| POST   | /api/quizzes/:id/submit   | Private | Submit quiz answers     |
-
-### User
-| Method | Endpoint              | Access  | Description           |
-|--------|-----------------------|---------|-----------------------|
-| GET    | /api/users/me         | Private | Get current user info |
-| GET    | /api/users/me/quizzes | Private | Get user's quizzes    |
-
----
-
-## Security
-
-- Passwords hashed with **bcrypt** (10 salt rounds)
-- **JWT** tokens expire after 30 days
-- Correct answers **never exposed** during quiz-taking
-- Score calculated **server-side only**
-- Ownership validated before edit/delete operations
-- No secrets stored in frontend code
-
----
-
-## Deployment
-
-### Frontend (Vercel / Netlify)
-```bash
-cd frontend
-npm run build
-# deploy the dist/ folder
-# Set VITE_API_URL env var to your backend URL
-```
-
-### Backend (Railway / Render / Heroku)
-```bash
-cd backend
-# Set environment variables:
-# MONGODB_URI, JWT_SECRET, PORT, FRONTEND_URL
-npm start
-```
-
----
-
-*CodSoft Internship · Level 2 · Task 2*
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── contexts/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── .env.example
+│   ├── package.json
+│   └── vite.config.js
+│
+├── .gitignore
+└── README.md
